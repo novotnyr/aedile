@@ -2,6 +2,9 @@ package com.github.novotnyr.aedile;
 
 import com.github.novotnyr.aedile.git.PropertyDirectoryConsulKeyAndValueImporter;
 
+/**
+ * A configuration object for the Consul instance.
+ */
 public class ConsulConfiguration {
     public static final String DEFAULT_CONSUL_HOST = "localhost";
 
@@ -23,23 +26,52 @@ public class ConsulConfiguration {
 
     private String datacenter;
 
+    /**
+     * Create a configuration with default values.
+     * <p>
+     *     Uses the default consul host,
+     *     the default port,
+     *     the default configuration prefix,
+     *     and no user, password, datacenter nor ACL token.
+     * </p>
+     */
     public ConsulConfiguration() {
         // empty constructor
     }
 
+    /**
+     * Create a configuration that points to the specific
+     * host and port
+     * @param host a Consul host
+     * @param port a consul port
+     */
     public ConsulConfiguration(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
+    /**
+     * Return the host used by this configuration
+     * @return the configuration host
+     */
     public String getHost() {
         return host;
     }
 
+    /**
+     * Sets the hostname of the Consul agent that will
+     * be used.
+     * @param host the Consul hostname
+     */
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * Return the port of the Consul agent that will
+     * be used.
+     * @return
+     */
     public int getPort() {
         return port;
     }
@@ -94,6 +126,10 @@ public class ConsulConfiguration {
         this.datacenter = datacenter;
     }
 
+    /**
+     * Build the Consul configuration from the environment variables.
+     * @return
+     */
     public static ConsulConfiguration fromEnvironment() {
         ConsulConfiguration configuration = new ConsulConfiguration();
         configuration.setHost(getHostEnvironmentVariable());

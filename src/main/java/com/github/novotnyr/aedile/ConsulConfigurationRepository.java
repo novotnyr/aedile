@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * High-level accessor to the Consul K/V repository.
+ */
 public class ConsulConfigurationRepository {
 
     public final Logger logger = LoggerFactory.getLogger(getClass());
@@ -36,11 +39,24 @@ public class ConsulConfigurationRepository {
 
     private ConsulConfiguration configuration;
 
+    /**
+     * Create a repository with necessary configuration.
+     * @param configuration Consul configuration object
+     */
     public ConsulConfigurationRepository(ConsulConfiguration configuration) {
         this.configuration = configuration;
         this.consulClientProvider = new ConsulClientProvider(configuration);
     }
 
+    /**
+     * Exports the whole contents of the K/V database to a specific directory.
+     * <p>
+     *     The export method will automatically create subfolders of the specified <i>directory</i>
+     *     in the filesystem. The last directory will correspond to a properties file that will
+     *     contain keys and values in the directory.
+     * </p>
+     * @param directory
+     */
     public void export(File directory) {
         ConsulClient consul = getConsulClient();
         Response<List<GetValue>> response = consul.getKVValues("/", this.configuration.getAclToken(), getQueryParams());
@@ -115,7 +131,7 @@ public class ConsulConfigurationRepository {
         return new String(bytes, Charsets.UTF_8);
     }
 
-    private ConsulClient getConsulClient() {
+    protected ConsulClient getConsulClient() {
         return this.consulClientProvider.getConsulClient();
     }
 

@@ -16,10 +16,21 @@ public class NamedMap<K, V> {
 
     private Map<K, V> delegate;
 
+    /**
+     * Wrap an existing map with a name and an empty prefix.
+     * @param name an arbitrary map name
+     * @param map an existing map that will be wrapped
+     */
     public NamedMap(String name, Map<K, V> map) {
         this(DEFAULT_PREFIX, name, map);
     }
 
+    /**
+     * Wrap an existing map with arbitrary name and a prefix.
+     * @param prefix an arbitrary prefix that describes a map
+     * @param name an arbitrary name that is attached to the map
+     * @param map map that will be wrapped
+     */
     public NamedMap(String prefix, String name, Map<K, V> map) {
         if(name == null) {
             throw new IllegalArgumentException("Name must be set");
@@ -33,14 +44,26 @@ public class NamedMap<K, V> {
         this.delegate = map;
     }
 
+    /**
+     * Return the prefix attached to the map
+     * @return the prefix
+     */
     public String getPrefix() {
         return prefix;
     }
 
+    /**
+     * Return the name attached to the map
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Get the map instance that is wrapped by this object
+     * @return a wrapped map
+     */
     public Map<K, V> getDelegate() {
         return delegate;
     }

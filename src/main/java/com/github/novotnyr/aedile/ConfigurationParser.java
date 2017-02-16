@@ -10,7 +10,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Parses the configuration from a file.
+ */
 public class ConfigurationParser {
+    /**
+     * Parse the configuration from the <code>git2consul</code>
+     * file to the {@link Configuration} object
+     * @param file a JSON file with the configuration
+     * @return fully parsed configuration
+     * @throws ImporterConfigurationException if the file is not found or is not readable.
+     */
     public Configuration parse(File file) {
         try(FileReader reader = new FileReader(file)) {
             Gson gson = new GsonBuilder()

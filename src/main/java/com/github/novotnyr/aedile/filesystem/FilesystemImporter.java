@@ -6,6 +6,19 @@ import com.github.novotnyr.aedile.git.PropertyDirectoryConsulKeyAndValueImporter
 
 import java.io.File;
 
+/**
+ * Command-line client of the single directory import.
+ *
+ * <p>
+ *     The client supports a single command-line argument, denoting the path to the directory
+ *     that shall be imported to Consul.
+ * </p>
+ * <p>
+ *     The Consul configuration is specified via environment variables.
+ * </p>
+ *
+ * @see PropertyDirectoryConsulKeyAndValueImporter
+ */
 public class FilesystemImporter {
     public static void main(String[] args) {
         if(args.length < 1) {

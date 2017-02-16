@@ -11,9 +11,37 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Handles import of property files from a specific directory.
+ * <p>
+ *     The importer takes a directory of <code>.properties</code>
+ *     files. Each file represents a bottom-level directory in Consul K/V
+ *     store. The properties in this file will be imported as a Consul keys and values.
+ * </p>
+ * <p>
+ *     Suppose the following structure:
+ *     <pre>
+ *         env
+ *           |-api
+ *               |-application.properties
+ *           |-impl
+ *               |-application.properties
+ *     </pre>
+ *     <p>
+ *         Suppose the default prefix, <code>config</code>.
+ *     </p>
+ *     <p>
+ *         The import from the <code>/env/api</code> folder will
+ *         create the folder <code>config/env/api/application</code> with
+ *         keys and values taken from the <code>application.properties.</code>
+ *     </p>
+ *
+ * </p>
+ */
 public class PropertyDirectoryConsulKeyAndValueImporter {
     public final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -23,11 +51,20 @@ public class PropertyDirectoryConsulKeyAndValueImporter {
 
     private String prefix = DEFAULT_CONFIGURATION_PREFIX;
 
+    /**
+     * Create an importer with a specific Consul configuration
+     * @param configurationRepository Consul configuration holder
+     */
     public PropertyDirectoryConsulKeyAndValueImporter(ConsulConfigurationRepository configurationRepository) {
         this.configurationRepository = configurationRepository;
     }
 
-    public void run(File configurationDirectory) {
+    /**
+     * Runs the import of the properties from a specified directory.
+     *
+     * @param configurationDirectory
+     */
+    public void run(File configurationDirectory) throws ImporterConfigurationException {
         if(!configurationDirectory.isDirectory()) {
             throw new ImporterConfigurationException("Directory "
                     + configurationDirectory
@@ -52,6 +89,12 @@ public class PropertyDirectoryConsulKeyAndValueImporter {
         return FilenameUtils.removeExtension(configurationFile.getName().toString());
     }
 
+    /**
+     * Loads the properties as a map from the specified {@link Properties} file
+     * @param propertyFile a file with properties
+     * @return a map with keys and values from the files
+     * @see Properties#load(Reader)
+     */
     private Map<String, String> loadProperties(File propertyFile) {
         try(BufferedReader reader = new BufferedReader(new FileReader(propertyFile))) {
             Properties properties = new Properties();

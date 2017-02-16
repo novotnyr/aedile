@@ -1,0 +1,44 @@
+About
+=====
+Aedile as a Consul configuration K/V importer and exporter in the spirit of `git2consul`
+
+Running the Aedile
+==================
+
+Download the `aedile.jar`.
+
+Importing from the filesystem
+=============================
+
+To import the files from the filesystem directory, run Aedile:
+
+    java -cp aedile.jar com.github.novotnyr.aedile.filesystem.FilesystemImporter /etc/consul/config/ft-prod
+
+The Consul configuration for the import is guided by the Environment Variables.
+
+Exporting from the Consul K/V to the filesystem
+===============================================
+
+To export the whole Consul K/V configuration into the filesystem directory
+hierarchy, run Aedile exporter:
+
+    java -cp aedile.jar com.github.novotnyr.aedile.filesystem.FilesystemExporter /tmp
+
+This will import the root folder and all recursive subfolders to the `/tmp`
+folder in the filesystem.
+
+All Consul K/V folders will be mapped to the filesystem directories.
+The bottommost folders will be mapped to the `.properties` files, containing
+keys and values separated by `=`.
+
+
+Environment Variables
+=====================
+
+*   `CONSUL_ENDPOINT` represents a Consul agent host. It is `localhost` by default.
+*   `CONSUL_PORT` represents a Consul agent port. It is 8500 by default.
+*   `TOKEN` corresponds to the ACL token as specified by Consul ACL protection. It is empty by default.
+*   `CONSUL_HTTP_USER` represents a user that is sent in the HTTP Basic Authentication with HTTP requests to Consul API.
+*   `CONSUL_HTTP_PASSWORD` represents a password that is sent in the HTTP Basic authentication with HTTP requests.
+*   `CONSUL_KEY_PREFIX` represents a default prefix for the configuration values.
+*   `CONSUL_DATACENTER` represents a datacenter that is targeted with requests.

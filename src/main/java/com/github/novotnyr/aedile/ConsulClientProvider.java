@@ -9,6 +9,10 @@ import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+/**
+ * Provides instances of Consul clients. Represented by
+ *
+ */
 public class ConsulClientProvider {
     private ConsulConfiguration configuration;
 

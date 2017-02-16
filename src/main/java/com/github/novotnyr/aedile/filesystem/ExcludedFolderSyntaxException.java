@@ -1,5 +1,8 @@
 package com.github.novotnyr.aedile.filesystem;
 
+/**
+ * Indicates a wrong syntax of excluded folder specification.
+ */
 public class ExcludedFolderSyntaxException extends RuntimeException {
 
     public ExcludedFolderSyntaxException() {
