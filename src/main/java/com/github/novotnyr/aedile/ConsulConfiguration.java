@@ -2,6 +2,14 @@ package com.github.novotnyr.aedile;
 
 import com.github.novotnyr.aedile.git.PropertyDirectoryConsulKeyAndValueImporter;
 
+import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_DATACENTER;
+import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_ENDPOINT;
+import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_HTTP_PASSWORD;
+import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_HTTP_USER;
+import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_KEY_PREFIX;
+import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_PORT;
+import static com.github.novotnyr.aedile.EnvironmentVariables.TOKEN;
+
 /**
  * A configuration object for the Consul instance.
  */
@@ -144,7 +152,7 @@ public class ConsulConfiguration {
     }
 
     private static String getHostEnvironmentVariable() {
-        String consulEndpoint = System.getenv("CONSUL_ENDPOINT");
+        String consulEndpoint = System.getenv(CONSUL_ENDPOINT);
         if(consulEndpoint == null) {
             consulEndpoint = DEFAULT_CONSUL_HOST;
         }
@@ -152,7 +160,7 @@ public class ConsulConfiguration {
     }
 
     private static int getPortEnvironmentVariable() {
-        String consulPortString = System.getenv("CONSUL_PORT");
+        String consulPortString = System.getenv(CONSUL_PORT);
         int consulPort;
         try {
             consulPort = Integer.parseInt(consulPortString);
@@ -163,7 +171,7 @@ public class ConsulConfiguration {
     }
 
     private static String getAclTokenEnvironmentVariable() {
-        String token = System.getenv("TOKEN");
+        String token = System.getenv(TOKEN);
         if(token == null) {
             return token;
         }
@@ -171,7 +179,7 @@ public class ConsulConfiguration {
     }
 
     private static String getUserEnvironmentVariable() {
-        String user = System.getenv("CONSUL_HTTP_USER");
+        String user = System.getenv(CONSUL_HTTP_USER);
         if(user == null) {
             return user;
         }
@@ -179,7 +187,7 @@ public class ConsulConfiguration {
     }
 
     private static String getPasswordEnvironmentVariable() {
-        String password = System.getenv("CONSUL_HTTP_PASSWORD");
+        String password = System.getenv(CONSUL_HTTP_PASSWORD);
         if(password == null) {
             return password;
         }
@@ -187,7 +195,7 @@ public class ConsulConfiguration {
     }
 
     private static String getPrefixEnvironmentVariable() {
-        String consulEndpoint = System.getenv("CONSUL_KEY_PREFIX");
+        String consulEndpoint = System.getenv(CONSUL_KEY_PREFIX);
         if(consulEndpoint == null) {
             consulEndpoint = PropertyDirectoryConsulKeyAndValueImporter.DEFAULT_CONFIGURATION_PREFIX;
         }
@@ -195,7 +203,7 @@ public class ConsulConfiguration {
     }
 
     public static String getDatacenterEnvironmentVariable() {
-        String datacenter = System.getenv("CONSUL_DATACENTER");
+        String datacenter = System.getenv(CONSUL_DATACENTER);
         if(datacenter == null) {
             return null;
         }
