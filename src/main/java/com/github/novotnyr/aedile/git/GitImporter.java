@@ -61,6 +61,7 @@ public class GitImporter {
         if(! directory.isDirectory()) {
             return false;
         }
-        return directory.listFiles().length > 0;
+        File[] files = directory.listFiles();
+        return files != null && files.length > 0;
     }
 }
