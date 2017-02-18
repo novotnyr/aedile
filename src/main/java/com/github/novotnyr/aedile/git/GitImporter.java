@@ -23,7 +23,7 @@ public class GitImporter {
         String clonedRepositoryDirectory = configuration.getLocalStore();
         String configurationSubDirectory = clonedRepositoryDirectory + "/" + repo.getSourceRoot();
 
-        String keyPrefix = repo.getMountPoint();
+        String keyPrefix = getKeyPrefix(repo);
         if(keyPrefix == null) {
             keyPrefix = PropertyFilesDirectoryImporter.DEFAULT_CONFIGURATION_PREFIX;
         }
@@ -38,6 +38,22 @@ public class GitImporter {
         PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(repository);
         directoryImporter.setKeyPrefix(keyPrefix);
         directoryImporter.run(new File(configurationSubDirectory));
+    }
+
+
+    /**
+     * When building the key name,
+     * concatenate mountpoint, repo name, branch name (assuming include_branch_name is true), and
+     * the path of the file in your git repo.
+     * Note: mountpoints can neither begin or end in with the character '/'. Such repo configs will be rejected.
+     * @param repo repo configuration
+     * @return concatenated key prefix
+     */
+    private String getKeyPrefix(Configuration.Repo repo) {
+        String mountPoint = repo.getMountPoint();
+        mountPoint = mountPoint != null ? mountPoint + "/" : "";
+
+        return mountPoint + repo.getName();
     }
 
     protected void gitClone(String remoteUrl, File clonedRepositoryDirectory) {

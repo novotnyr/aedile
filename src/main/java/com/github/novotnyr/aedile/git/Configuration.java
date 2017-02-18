@@ -69,6 +69,8 @@ public class Configuration {
 
         private String sourceRoot;
 
+        private String name;
+
         @SerializedName("mountpoint")
         private String mountPoint;
 
@@ -136,6 +138,23 @@ public class Configuration {
          */
         public void setMountPoint(String mountPoint) {
             this.mountPoint = mountPoint;
+        }
+
+        /**
+         * Return the repo name.
+         * @return
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Set the repo name. This is used in the construction
+         * of Consul K/V directory name in the directory path.
+         * @param name repo name
+         */
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }
