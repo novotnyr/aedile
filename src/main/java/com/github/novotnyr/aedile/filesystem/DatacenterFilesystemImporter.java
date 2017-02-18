@@ -3,7 +3,6 @@ package com.github.novotnyr.aedile.filesystem;
 import com.github.novotnyr.aedile.ConsulConfiguration;
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
 import com.github.novotnyr.aedile.ImporterConfigurationException;
-import com.github.novotnyr.aedile.git.PropertyFilesDirectoryImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.AntPathMatcher;

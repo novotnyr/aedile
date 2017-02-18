@@ -1,6 +1,6 @@
 package com.github.novotnyr.aedile;
 
-import com.github.novotnyr.aedile.git.PropertyFilesDirectoryImporter;
+import com.github.novotnyr.aedile.filesystem.PropertyFilesDirectoryImporter;
 
 import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_DATACENTER;
 import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_ENDPOINT;

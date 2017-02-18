@@ -2,7 +2,6 @@ package com.github.novotnyr.aedile.filesystem;
 
 import com.github.novotnyr.aedile.ConsulConfiguration;
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
-import com.github.novotnyr.aedile.git.PropertyFilesDirectoryImporter;
 
 import java.io.File;
 

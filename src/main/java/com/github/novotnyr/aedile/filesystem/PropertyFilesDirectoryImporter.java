@@ -1,7 +1,8 @@
-package com.github.novotnyr.aedile.git;
+package com.github.novotnyr.aedile.filesystem;
 
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
 import com.github.novotnyr.aedile.ImporterConfigurationException;
+import com.github.novotnyr.aedile.git.ConfigurationImportException;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,6 @@ import java.util.Properties;
  *         create the folder <code>config/application</code> with
  *         keys and values taken from the <code>application.properties.</code>
  *     </p>
- *
  * </p>
  */
 public class PropertyFilesDirectoryImporter {

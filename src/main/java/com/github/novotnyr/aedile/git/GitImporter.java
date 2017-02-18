@@ -3,6 +3,7 @@ package com.github.novotnyr.aedile.git;
 import com.github.novotnyr.aedile.ConfigurationParser;
 import com.github.novotnyr.aedile.ConsulConfiguration;
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
+import com.github.novotnyr.aedile.filesystem.PropertyFilesDirectoryImporter;
 import com.github.novotnyr.aedile.git.command.GitClone;
 import com.github.novotnyr.aedile.git.command.GitPull;
 

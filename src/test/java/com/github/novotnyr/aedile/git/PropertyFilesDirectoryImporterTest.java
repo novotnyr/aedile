@@ -3,6 +3,7 @@ package com.github.novotnyr.aedile.git;
 import com.ecwid.consul.v1.ConsulClient;
 import com.github.novotnyr.aedile.ConsulConfiguration;
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
+import com.github.novotnyr.aedile.filesystem.PropertyFilesDirectoryImporter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
