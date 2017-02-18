@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Handles import of property files from a specific directory.
+ * Handles import of property files from a single specific directory.
  * <p>
  *     The importer takes a directory of <code>.properties</code>
  *     files. Each file represents a bottom-level directory in Consul K/V
@@ -45,6 +45,9 @@ import java.util.Properties;
 public class PropertyDirectoryConsulKeyAndValueImporter {
     public final Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Default configuration prefix that maps to the Consul K/V.
+     */
     public static final String DEFAULT_CONFIGURATION_PREFIX = "config";
 
     private ConsulConfigurationRepository configurationRepository;
@@ -73,6 +76,11 @@ public class PropertyDirectoryConsulKeyAndValueImporter {
 
         FileFilter filter = file -> file.getName().endsWith(".properties");
         File[] propertyFiles = configurationDirectory.listFiles(filter);
+        if(propertyFiles == null || propertyFiles.length == 0) {
+            logger.warn("No files found in {}", configurationDirectory);
+            return;
+        }
+
         for (File propertyFile : propertyFiles) {
             logger.info("Handling properties in {}", propertyFile);
             Map<String, String> properties = loadProperties(propertyFile);
