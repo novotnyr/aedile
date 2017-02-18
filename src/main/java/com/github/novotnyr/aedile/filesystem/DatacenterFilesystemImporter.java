@@ -23,6 +23,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Imports multiple folders that corresponds to datacenter configurations.
+ * <p>
+ *     The top-level folder shall contain subfolders corresponding to datacenter names.
+ *     Datacenter subfolders shall be mapped to datacenter-specific REST queries.
+ * </p>
+ * <p>
+ *     The datacenter folder shall be directly mirrored to the Consul K/V structure,
+ *     when properties file will contain the bottomost folders with keys and values.
+ * </p>
+ */
 public class DatacenterFilesystemImporter {
     public final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -53,12 +64,16 @@ public class DatacenterFilesystemImporter {
             // override datacenter name from directory
             consulConfiguration.setDatacenter(datacenter);
 
-            ConsulConfigurationRepository repository = new ConsulConfigurationRepository(consulConfiguration);
+            ConsulConfigurationRepository repository = getConsulConfigurationRepository(consulConfiguration);
             PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(repository);
             directoryImporter.setKeyPrefix(configurationPrefix);
 
             directoryImporter.run(directory);
         }
+    }
+
+    protected ConsulConfigurationRepository getConsulConfigurationRepository(ConsulConfiguration consulConfiguration) {
+        return new ConsulConfigurationRepository(consulConfiguration);
     }
 
     /**
@@ -138,6 +153,24 @@ public class DatacenterFilesystemImporter {
         return ConsulConfiguration.fromEnvironment();
     }
 
+    /**
+     * Configure excluded folders from environment variable.
+     * <p>
+     *      The env variable {@value com.github.novotnyr.aedile.EnvironmentVariables#CONSUL_IMPORT_EXCLUDE}
+     *      specification contains colon-delimited entries.
+     * </p>
+     * <p>
+     *     Each entry contains a name of the datacenter, then a hash <code>#</code>
+     *     then a directory structure that shall be ignored upon import.
+     * </p>
+     * <p>
+     *     An example <code>dc1#config/unittest/application:dc1#config/unittest/application2</code>:
+     *     <ul>
+     *          <li>The datacenter <code>dc1</code> shall ignore the <code>config/unittest/application</code> folder</li>
+     *          <li>The datacenter <code>dc1</code> shall ignore the <code>config/unittest2/application</code> folder</li>
+     *     </ul>
+     * @throws ImporterConfigurationException when excluded folders specification is malformed
+     */
     public void configureExcludedFolders() throws ImporterConfigurationException {
         List<ExcludedFolder> excludedFolders = new LinkedList<>();
         String excludedSpecification = getExcludedFoldersSpecificationString();

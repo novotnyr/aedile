@@ -15,5 +15,6 @@ public class EnvironmentVariables {
 
     public static final String CONSUL_DATACENTER = "CONSUL_DATACENTER";
 
+    public static final String CONSUL_IMPORT_EXCLUDE = "CONSUL_IMPORT_EXCLUDE";
 
 }

@@ -31,6 +31,66 @@ All Consul K/V folders will be mapped to the filesystem directories.
 The bottommost folders will be mapped to the `.properties` files, containing
 keys and values separated by `=`.
 
+Importing large datacenter structure
+====================================
+Imports multiple folders that corresponds to datacenter configurations.
+
+To import, run Aedile:
+
+    java -cp aedile.jar com.github.novotnyr.aedile.filesystem.DatacenterFilesystemImporter /etc/consul/config/datacenters
+
+Imagine the following folder hierarchy:
+
+    ./datacenters
+        |- dc1
+        |  |- config
+        |     |- unittest
+        |     |  |- application
+        |     |     |- code.properties
+        |     |     |- demo.properties
+        |     |- unittest2
+        |        |- application
+        |           |- demo2.properties
+        |- dc2
+           |- config
+              |- prod
+                  |- application.properties
+                  |- impl.properties
+
+Importing the `datacenters` directory creates the following structure in Consul
+K/V. The `dc1` and `dc2` directories will map to the *dc*
+parameter in Consul K/V REST API requests. The first directory `dc1` will map to
+the `dc=dc1` query parameter, and the second directory `dc2` will map to the
+`dc=dc2` query param.
+
+The datacenter `dc1` will contain the structure that corresponds to the filesystem
+structure.
+
+    |- config
+    |   |- unittest
+    |   |  |- application
+    |   |     |- code
+    |   |     |   |- key=value from code.properties
+    |   |     |   |- another key=value from code.properties
+    |   |     |- demo
+    |   |         |- key=value from demo.properties
+    |   |         |- another key=value demo code.properties
+    |   |- unittest2
+           |- application
+              |- demo2
+                  |- key=value from demo2.properties
+                  |- another key=value from demo2.properties
+
+### Ignoring Folders
+The `CONSUL_IMPORT_EXCLUDE` variable contains a datacenter/folder specification
+that shall be ignored upon import.
+
+An example:
+
+    dc1#config/unittest/application:dc1#config/unittest/application2
+
+*   The datacenter `dc1` shall ignore the `config/unittest/application` folder
+*   The datacenter `dc1` shall ignore the `config/unittest2/application` folder
 
 Environment Variables
 =====================
@@ -42,3 +102,4 @@ Environment Variables
 *   `CONSUL_HTTP_PASSWORD` represents a password that is sent in the HTTP Basic authentication with HTTP requests.
 *   `CONSUL_KEY_PREFIX` represents a default prefix for the configuration values.
 *   `CONSUL_DATACENTER` represents a datacenter that is targeted with requests.
+*   `CONSUL_IMPORT_EXCLUDE` contains a specification of ignored datacenters and subfolders
