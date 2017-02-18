@@ -24,7 +24,7 @@ public class PropertyDirectoryConsulKeyAndValueImporterTest {
 
     private ConsulClient consulClient;
 
-    private PropertyDirectoryConsulKeyAndValueImporter importer;
+    private PropertyFilesDirectoryImporter importer;
 
     private File implConfigFolder;
 
@@ -49,7 +49,7 @@ public class PropertyDirectoryConsulKeyAndValueImporterTest {
             }
         };
 
-        importer = new PropertyDirectoryConsulKeyAndValueImporter(repository);
+        importer = new PropertyFilesDirectoryImporter(repository);
 
         setupFiles();
     }

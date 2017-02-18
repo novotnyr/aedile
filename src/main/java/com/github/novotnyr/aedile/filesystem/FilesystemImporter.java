@@ -2,7 +2,7 @@ package com.github.novotnyr.aedile.filesystem;
 
 import com.github.novotnyr.aedile.ConsulConfiguration;
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
-import com.github.novotnyr.aedile.git.PropertyDirectoryConsulKeyAndValueImporter;
+import com.github.novotnyr.aedile.git.PropertyFilesDirectoryImporter;
 
 import java.io.File;
 
@@ -17,7 +17,7 @@ import java.io.File;
  *     The Consul configuration is specified via environment variables.
  * </p>
  *
- * @see PropertyDirectoryConsulKeyAndValueImporter
+ * @see PropertyFilesDirectoryImporter
  */
 public class FilesystemImporter {
     public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class FilesystemImporter {
         ConsulConfiguration consulConfiguration = ConsulConfiguration.fromEnvironment();
 
         ConsulConfigurationRepository repository = new ConsulConfigurationRepository(consulConfiguration);
-        PropertyDirectoryConsulKeyAndValueImporter directoryImporter = new PropertyDirectoryConsulKeyAndValueImporter(repository);
+        PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(repository);
         directoryImporter.setKeyPrefix(consulConfiguration.getPrefix());
 
         directoryImporter.run(configurationSubDirectory);

@@ -42,7 +42,7 @@ import java.util.Properties;
  *
  * </p>
  */
-public class PropertyDirectoryConsulKeyAndValueImporter {
+public class PropertyFilesDirectoryImporter {
     public final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -58,7 +58,7 @@ public class PropertyDirectoryConsulKeyAndValueImporter {
      * Create an importer with a specific Consul configuration
      * @param configurationRepository Consul configuration holder
      */
-    public PropertyDirectoryConsulKeyAndValueImporter(ConsulConfigurationRepository configurationRepository) {
+    public PropertyFilesDirectoryImporter(ConsulConfigurationRepository configurationRepository) {
         this.configurationRepository = configurationRepository;
     }
 

@@ -25,7 +25,7 @@ public class GitImporter {
 
         String keyPrefix = repo.getMountPoint();
         if(keyPrefix == null) {
-            keyPrefix = PropertyDirectoryConsulKeyAndValueImporter.DEFAULT_CONFIGURATION_PREFIX;
+            keyPrefix = PropertyFilesDirectoryImporter.DEFAULT_CONFIGURATION_PREFIX;
         }
 
         if(isEmpty(clonedRepositoryDirectory)) {
@@ -35,7 +35,7 @@ public class GitImporter {
         }
 
         ConsulConfigurationRepository repository = newConsulConfigurationRepository();
-        PropertyDirectoryConsulKeyAndValueImporter directoryImporter = new PropertyDirectoryConsulKeyAndValueImporter(repository);
+        PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(repository);
         directoryImporter.setKeyPrefix(keyPrefix);
         directoryImporter.run(new File(configurationSubDirectory));
     }

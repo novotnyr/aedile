@@ -1,6 +1,6 @@
 package com.github.novotnyr.aedile;
 
-import com.github.novotnyr.aedile.git.PropertyDirectoryConsulKeyAndValueImporter;
+import com.github.novotnyr.aedile.git.PropertyFilesDirectoryImporter;
 
 import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_DATACENTER;
 import static com.github.novotnyr.aedile.EnvironmentVariables.CONSUL_ENDPOINT;
@@ -30,7 +30,7 @@ public class ConsulConfiguration {
 
     private String password;
 
-    private String prefix = PropertyDirectoryConsulKeyAndValueImporter.DEFAULT_CONFIGURATION_PREFIX;
+    private String prefix = PropertyFilesDirectoryImporter.DEFAULT_CONFIGURATION_PREFIX;
 
     private String datacenter;
 
@@ -197,7 +197,7 @@ public class ConsulConfiguration {
     private static String getPrefixEnvironmentVariable() {
         String consulEndpoint = System.getenv(CONSUL_KEY_PREFIX);
         if(consulEndpoint == null) {
-            consulEndpoint = PropertyDirectoryConsulKeyAndValueImporter.DEFAULT_CONFIGURATION_PREFIX;
+            consulEndpoint = PropertyFilesDirectoryImporter.DEFAULT_CONFIGURATION_PREFIX;
         }
         return consulEndpoint;
     }
