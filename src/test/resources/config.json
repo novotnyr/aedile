@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "local_store" : "./target/gitrepo",
+  "repos" : [{
+    "name" : "aedile",
+    "url" : "https://github.com/novotnyr/aedile.git",
+    "source_root": "src/test/resources/datacenters/dc1/config/unittest/application",
+    "mountpoint": "config/aedile"
+  }]
+}
