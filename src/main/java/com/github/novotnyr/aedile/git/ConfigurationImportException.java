@@ -1,5 +1,8 @@
 package com.github.novotnyr.aedile.git;
 
+/**
+ * Indicate an error in the importing of external configuration.
+ */
 public class ConfigurationImportException extends RuntimeException {
 
     public ConfigurationImportException() {

@@ -17,14 +17,35 @@ public class Configuration {
 
     private List<Repo> repos = new LinkedList<>();
 
+    /**
+     * Get the list of Git repository configurations
+     * used for import.
+     * @return Git repository configurations
+     */
     public List<Repo> getRepos() {
         return repos;
     }
 
+    /**
+     * Sets the list of Git repository configurations
+     * used in the imports.
+     * @param repos list of repository configurations
+     */
     public void setRepos(List<Repo> repos) {
+        if (repos == null) {
+            throw new NullPointerException("Repositories must be set");
+        }
+        if (repos.isEmpty()) {
+            throw new IllegalArgumentException("Cannot set empty list of repository configurations");
+        }
         this.repos = repos;
     }
 
+    /**
+     * Get the directory in the local filesystem that contains
+     * the Git repo used to import the configuration
+     * @return local directory with Git repo.
+     */
     public String getLocalStore() {
         return localStore;
     }
@@ -38,6 +59,9 @@ public class Configuration {
         this.localStore = localStore;
     }
 
+    /**
+     * Represents a single Git repo definition
+     */
     public class Repo {
         private String url;
 
@@ -48,6 +72,10 @@ public class Configuration {
         @SerializedName("mountpoint")
         private String mountPoint;
 
+        /**
+         * Get the Git URL of the repository.
+         * @return the Git URL of the remote repo
+         */
         public String getUrl() {
             return url;
         }
@@ -71,6 +99,12 @@ public class Configuration {
             this.branches = branches;
         }
 
+        /**
+         * Get the Git repo subdirectory that is navigated before mapping
+         * files to KVs.
+         * @see #setSourceRoot(String)
+         * @return
+         */
         public String getSourceRoot() {
             return sourceRoot;
         }
@@ -85,12 +119,18 @@ public class Configuration {
             this.sourceRoot = sourceRoot;
         }
 
+        /**
+         * Prefix of keys in the Consul K/V.  Corresponds
+         * to <tt>mountpoint</tt> of <tt>git2consul</tt>.
+         *
+         * @return
+         */
         public String getMountPoint() {
             return mountPoint;
         }
 
         /**
-         * Prefix of keys in the Consul K/V. See
+         * Set the prefix of keys in the Consul K/V. See
          * <tt>git2consul</tt> and the documentation
          * for <tt>mountpoint</tt>.
          */
