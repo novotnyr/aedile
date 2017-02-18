@@ -36,7 +36,7 @@ import java.util.Properties;
  *     </p>
  *     <p>
  *         The import from the <code>/env/api</code> folder will
- *         create the folder <code>config/env/api/application</code> with
+ *         create the folder <code>config/application</code> with
  *         keys and values taken from the <code>application.properties.</code>
  *     </p>
  *
