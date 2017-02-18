@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class PropertyDirectoryConsulKeyAndValueImporterTest {
+public class PropertyFilesDirectoryImporterTest {
     private ConsulConfigurationRepository repository;
 
     private ConsulClient consulClient;
