@@ -2,6 +2,7 @@ package com.github.novotnyr.aedile.filesystem;
 
 import com.github.novotnyr.aedile.ConsulConfiguration;
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
+import com.github.novotnyr.aedile.EnvironmentVariables;
 import com.github.novotnyr.aedile.ImporterConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -185,7 +186,7 @@ public class DatacenterFilesystemImporter {
     }
 
     protected String getExcludedFoldersSpecificationString() {
-        return System.getenv("CONSUL_IMPORT_EXCLUDE");
+        return System.getenv(EnvironmentVariables.CONSUL_IMPORT_EXCLUDE);
     }
 
     public static void main(String[] args) {
