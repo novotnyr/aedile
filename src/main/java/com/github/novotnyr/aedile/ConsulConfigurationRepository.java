@@ -120,7 +120,12 @@ public class ConsulConfigurationRepository {
     }
 
     private <K, V> String prepareKey(NamedMap<K, V> map, Map.Entry<K, V> entry) {
-        return map.getPrefix() + "/" + map.getName() + "/" + entry.getKey();
+        String prefix = map.getPrefix() + "/";
+        if ("/".equals(prefix)) {
+            prefix = "";
+        }
+
+        return prefix + map.getName() + "/" + entry.getKey();
     }
 
     private String decodeBase64(String base64Value) {
