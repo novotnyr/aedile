@@ -7,12 +7,21 @@ Running the Aedile
 
 Download the `aedile.jar`.
 
+It is a standalone JAR, executable via `java -jar aedile.jar`
+
+There are following functionalities:
+
+*   import to Consul K/V from a specific directory with a set of .properties files
+*   import to Consul K/V from Git
+*   immport to Consul K/V from a set of datacenter-specific directories
+*   export from Consul K/V to the directory tree
+
 Importing from the filesystem
 =============================
 
 To import the files from the filesystem directory, run Aedile:
 
-    java -cp aedile.jar com.github.novotnyr.aedile.filesystem.FilesystemImporter /etc/consul/config/ft-prod
+    java -jar aedile.jar import /etc/consul/config/ft-prod
 
 The Consul configuration for the import is guided by the Environment Variables.
 
@@ -22,7 +31,7 @@ Exporting from the Consul K/V to the filesystem
 To export the whole Consul K/V configuration into the filesystem directory
 hierarchy, run Aedile exporter:
 
-    java -cp aedile.jar com.github.novotnyr.aedile.filesystem.FilesystemExporter /tmp
+    java -jar aedile.jar export /tmp
 
 This will import the root folder and all recursive subfolders to the `/tmp`
 folder in the filesystem.
@@ -37,7 +46,7 @@ Imports multiple folders that corresponds to datacenter configurations.
 
 To import, run Aedile:
 
-    java -cp aedile.jar com.github.novotnyr.aedile.filesystem.DatacenterFilesystemImporter /etc/consul/config/datacenters
+    java -jar aedile.jar import-dc /etc/consul/config/datacenters
 
 Imagine the following folder hierarchy:
 
@@ -91,6 +100,51 @@ An example:
 
 *   The datacenter `dc1` shall ignore the `config/unittest/application` folder
 *   The datacenter `dc1` shall ignore the `config/unittest2/application` folder
+
+#### Wildcard supports
+
+Specification may contain Ant-based wildcards:
+
+    dc1#config/**/*
+
+This ignores any subfolder (recursively) in the `config` folder for datacenter `dc1`.
+
+Git import
+==========
+
+To import the files from the Git directory, run Aedile:
+
+    java -jar aedile.jar git config.json
+
+Git config
+----------
+
+Git config is configured via `git2consul`-like configuration file.
+
+    {
+      "version": "1.0",
+      "local_store" : "./target/gitrepo",
+      "repos" : [{
+        "name" : "aedile",
+        "url" : "https://github.com/novotnyr/aedile.git",
+        "source_root": "src/test/resources/datacenters/dc1/config/unittest/application",
+        "mountpoint": "config"
+      }]
+    }
+
+*   `version`: always 1.0
+*   `local_store`: the local temporary file that will hold the cloned Git repo
+*   `name`: name of the Git repo. Will be appended to the Consul K/V prefix.  
+    When building the key name, git2consul will concatenate mountpoint, repo
+    name, and the path of the file in your git repo.
+*   `url`: URL of the Git repo
+*   `source_root`: A `source_root` is a repo-level option instructing Aedile to
+    navigate to a subdirectory in the git repo before mapping files to K/Vs. By
+    default, Aedile mirrors the entire repo into Consul KVs.  
+    If you have a repo configured with the `source_root`
+    `src/test/resources/datacenters/dc1/`, the file
+    `src/test/resources/datacenters/dc1/config/unittest/application/config.properties` would be
+    mapped to the KV as `config/unittest/application/config.properties`.
 
 Environment Variables
 =====================

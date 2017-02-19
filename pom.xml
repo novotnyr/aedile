@@ -24,12 +24,14 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.github.novotnyr.aedile.git.GitImporter</mainClass>
+                            <mainClass>com.github.novotnyr.aedile.Aedile</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <finalName>aedile</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
                     <execution>
@@ -77,6 +79,11 @@
             <groupId>com.ecwid.consul</groupId>
             <artifactId>consul-api</artifactId>
             <version>1.1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>args4j</groupId>
+            <artifactId>args4j</artifactId>
+            <version>2.33</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

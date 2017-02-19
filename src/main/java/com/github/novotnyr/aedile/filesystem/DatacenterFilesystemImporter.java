@@ -189,23 +189,4 @@ public class DatacenterFilesystemImporter {
         return System.getenv(EnvironmentVariables.CONSUL_IMPORT_EXCLUDE);
     }
 
-    public static void main(String[] args) {
-        if(args.length < 1) {
-            System.err.println("Missing folder");
-            System.err.println();
-            System.exit(1);
-        }
-
-        File datacenterConfigurationSubDirectory = new File(args[0]);
-        if (! datacenterConfigurationSubDirectory.isDirectory()) {
-            System.err.println("Not a folder " + datacenterConfigurationSubDirectory);
-            System.err.println();
-            System.exit(1);
-        }
-
-        DatacenterFilesystemImporter importer = new DatacenterFilesystemImporter();
-        importer.configureExcludedFolders();
-
-        importer.importDatacenters(datacenterConfigurationSubDirectory);
-    }
 }

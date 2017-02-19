@@ -8,14 +8,13 @@ import com.github.novotnyr.aedile.git.command.GitClone;
 import com.github.novotnyr.aedile.git.command.GitPull;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Imports key-value pairs into Consul K/V according to <code>git2consul</code>
  * configuration file.
  */
 public class GitImporter {
-    public void run(File configurationFile) throws IOException {
+    public void run(File configurationFile) {
         ConfigurationParser configurationParser = new ConfigurationParser();
         Configuration configuration = configurationParser.parse(configurationFile);
 
@@ -76,25 +75,14 @@ public class GitImporter {
     }
 
 
-    private boolean isEmpty(String directoryPath) throws IOException {
+    private boolean isEmpty(String directoryPath) {
         File file = new File(directoryPath);
         if(!file.isDirectory()) {
-            throw new IOException("The path does not denote a directory: " + directoryPath);
+            throw new ConfigurationImportException("The path does not denote a directory: " + directoryPath);
         }
 
         File[] files = file.listFiles();
         return files == null || files.length == 0;
     }
 
-    public static void main(String[] args) throws Exception {
-        if(args.length < 1) {
-            System.err.println("Missing configuration file");
-            System.exit(1);
-        }
-
-        String configurationFile = args[0];
-
-        GitImporter importer = new GitImporter();
-        importer.run(new File(configurationFile));
-    }
 }
