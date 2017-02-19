@@ -45,7 +45,13 @@ public class DirectoryTreeImporterTest {
 
         verify(consulClient, times(1)).setKVValue(eq("config/prod/application/name"), eq("mars"), any(), any(), any());
         verify(consulClient, times(1)).setKVValue(eq("config/prod/impl/version"), eq("1"), any(), any(), any());
+    }
 
+    @Test
+    public void testImportSingleDirectory() throws Exception {
+        importer.run(new File("src/test/resources/datacenters/dc2/config/prod"));
 
+        verify(consulClient, times(1)).setKVValue(eq("application/name"), eq("mars"), any(), any(), any());
+        verify(consulClient, times(1)).setKVValue(eq("impl/version"), eq("1"), any(), any(), any());
     }
 }

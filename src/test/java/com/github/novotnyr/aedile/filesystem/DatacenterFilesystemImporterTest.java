@@ -96,7 +96,12 @@ public class DatacenterFilesystemImporterTest {
         DatacenterFilesystemImporter importer = new DatacenterFilesystemImporter() {
             @Override
             protected ConsulConfiguration getConsulConfiguration() {
-                return new ConsulConfiguration();
+                return configuration;
+            }
+
+            @Override
+            protected ConsulConfigurationRepository getConsulConfigurationRepository(ConsulConfiguration consulConfiguration) {
+                return repository;
             }
 
             @Override
@@ -108,6 +113,10 @@ public class DatacenterFilesystemImporterTest {
 
 
         importer.importDatacenters(new File("src/test/resources/datacenters"));
+
+        verify(consulClient, times(1)).setKVValue(eq("config/prod/application/name"), eq("mars"), any(), any(), argThat(this::isDataCenter2));
+        verify(consulClient, times(1)).setKVValue(eq("config/prod/impl/version"), eq("1"), any(), any(), argThat(this::isDataCenter2));
+
     }
 
     private boolean isDataCenter1(QueryParams queryParams) {
