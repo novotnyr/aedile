@@ -22,6 +22,7 @@ public class DatacenterFilesystemImporterTest {
     private ConsulClient consulClient;
 
     private ConsulConfiguration configuration;
+
     private DatacenterFilesystemImporter importer;
 
     @Before
