@@ -1,9 +1,9 @@
 package com.github.novotnyr.aedile.cmdline;
 
-import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.Argument;
 
 public class FilesystemImportCommand {
-    @Option(name = "directory", required = true)
+    @Argument(metaVar = "directory")
     private String directory;
 
     public String getDirectory() {
