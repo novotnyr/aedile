@@ -66,7 +66,11 @@ public class Aedile {
      * @see PropertyFilesDirectoryImporter
      */
     private static void filesystemImport(FilesystemImportCommand commandConfiguration) {
-        File configurationSubDirectory = new File(commandConfiguration.getDirectory());
+        String configurationSubDirectoryString = commandConfiguration.getDirectory();
+        if (configurationSubDirectoryString == null) {
+            throw new ImporterConfigurationException("Import source directory must be set");
+        }
+        File configurationSubDirectory = new File(configurationSubDirectoryString);
 
         ConsulConfiguration consulConfiguration = ConsulConfiguration.fromEnvironment();
 
