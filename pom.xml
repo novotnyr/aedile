@@ -6,7 +6,7 @@
 
     <groupId>com.github.novotnyr</groupId>
     <artifactId>aedile</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <build>
         <plugins>
             <plugin>
