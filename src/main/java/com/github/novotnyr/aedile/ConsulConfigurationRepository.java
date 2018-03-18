@@ -97,7 +97,7 @@ public class ConsulConfigurationRepository {
     }
 
     private <K, V> void store(NamedMap<K, V> map) {
-        logger.info("Creating Consul client {}:{}", this.configuration.getHost(), this.configuration.getPort());
+        logger.debug("Creating Consul client {}:{}", this.configuration.getHost(), this.configuration.getPort());
         store(getConsulClient(), map);
     }
 

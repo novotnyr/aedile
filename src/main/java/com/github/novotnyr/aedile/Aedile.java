@@ -11,10 +11,14 @@ import com.github.novotnyr.aedile.filesystem.PropertyFilesDirectoryImporter;
 import com.github.novotnyr.aedile.git.GitImporter;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 public class Aedile {
+    public static final Logger logger = LoggerFactory.getLogger(Aedile.class);
+
     public static void main(String[] args) {
         CommandLineConfiguration commandLineConfiguration = new CommandLineConfiguration();
         CmdLineParser cmdLineParser = new CmdLineParser(commandLineConfiguration);
@@ -73,6 +77,7 @@ public class Aedile {
         File configurationSubDirectory = new File(configurationSubDirectoryString);
 
         ConsulConfiguration consulConfiguration = ConsulConfiguration.fromEnvironment();
+        describeToLog(consulConfiguration);
 
         ConsulConfigurationRepository repository = new ConsulConfigurationRepository(consulConfiguration);
         PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(repository);
@@ -106,4 +111,21 @@ public class Aedile {
         GitImporter importer = new GitImporter();
         importer.run(configurationFile);
     }
+
+    // Noncommand methods
+    private static void describeToLog(ConsulConfiguration c) {
+        if (! logger.isInfoEnabled()) {
+            return;
+        }
+        StringBuilder msg = new StringBuilder("Consul configured: ");
+        if (c.getUser() != null) {
+            msg.append(c.getUser()).append("@");
+        }
+        msg.append(c.getHost())
+                .append(":")
+                .append(c.getPort());
+
+        logger.info(msg.toString());
+    }
+
 }
