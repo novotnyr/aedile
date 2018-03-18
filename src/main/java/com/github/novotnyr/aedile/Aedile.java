@@ -77,6 +77,7 @@ public class Aedile {
         ConsulConfigurationRepository repository = new ConsulConfigurationRepository(consulConfiguration);
         PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(repository);
         directoryImporter.setKeyPrefix(consulConfiguration.getPrefix());
+        directoryImporter.setImportSubdirectories(! commandConfiguration.isRecursiveImportDisabled());
 
         directoryImporter.run(configurationSubDirectory);
     }

@@ -25,6 +25,19 @@ To import the files from the filesystem directory, run Aedile:
 
 The Consul configuration for the import is guided by the Environment Variables.
 
+By default, all subdirectories are imported as well, recursively.
+
+In the example, `/etc/consul/config/ft-prod/mt` and `/etc/consul/config/ft-prod/meta`
+subdirectories will be imported as `mt` and `meta` subdirectories respectively)
+under `ft-prod` directory in Consul K/V.
+
+Disabling recursion
+-------------------
+
+To disable recursive import, use the `--no-recurse` argument, such as:
+
+    java -jar aedile.jar import --no-recurse /etc/consul/config/ft-prod
+
 Exporting from the Consul K/V to the filesystem
 ===============================================
 

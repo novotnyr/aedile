@@ -54,6 +54,8 @@ public class PropertyFilesDirectoryImporter {
 
     private String prefix = DEFAULT_CONFIGURATION_PREFIX;
 
+    private boolean importSubdirectories = true;
+
     /**
      * Create an importer with a specific Consul configuration
      * @param configurationRepository Consul configuration holder
@@ -78,13 +80,30 @@ public class PropertyFilesDirectoryImporter {
         File[] propertyFiles = configurationDirectory.listFiles(filter);
         if(propertyFiles == null || propertyFiles.length == 0) {
             logger.warn("No files found in {}", configurationDirectory);
-            return;
         }
 
+        importFiles(propertyFiles);
+        importSubdirectories(configurationDirectory);
+    }
+
+    private void importFiles(File[] propertyFiles) {
         for (File propertyFile : propertyFiles) {
             logger.info("Handling properties in {}", propertyFile);
             Map<String, String> properties = loadProperties(propertyFile);
             configurationRepository.store(prefix, getConfigurationName(propertyFile), properties);
+        }
+    }
+
+    private void importSubdirectories(File configurationDirectory) {
+        if (!this.importSubdirectories) {
+            return;
+        }
+        File[] subdirectories = configurationDirectory.listFiles(File::isDirectory);
+        for (File subdirectory : subdirectories) {
+            PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(this.configurationRepository);
+            directoryImporter.setKeyPrefix(this.prefix + File.separatorChar + subdirectory.getName());
+            directoryImporter.setImportSubdirectories(this.importSubdirectories);
+            directoryImporter.run(subdirectory);
         }
     }
 
@@ -118,5 +137,12 @@ public class PropertyFilesDirectoryImporter {
      */
     public void setKeyPrefix(String keyPrefix) {
         this.prefix = keyPrefix;
+    }
+
+    /**
+     * Configure whether to recursively import subdirectories.
+     */
+    public void setImportSubdirectories(boolean importSubdirectories) {
+        this.importSubdirectories = importSubdirectories;
     }
 }
