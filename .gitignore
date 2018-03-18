@@ -71,3 +71,6 @@ crashlytics.properties
 crashlytics-build.properties
 
 /nbactions.xml
+
+# MacOS
+.DS_Store
