@@ -101,7 +101,7 @@ public class PropertyFilesDirectoryImporter {
         File[] subdirectories = configurationDirectory.listFiles(File::isDirectory);
         for (File subdirectory : subdirectories) {
             PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(this.configurationRepository);
-            directoryImporter.setKeyPrefix(this.prefix + File.separatorChar + subdirectory.getName());
+            directoryImporter.setKeyPrefix(this.prefix + "/" + subdirectory.getName());
             directoryImporter.setImportSubdirectories(this.importSubdirectories);
             directoryImporter.run(subdirectory);
         }
