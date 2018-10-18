@@ -4,10 +4,9 @@ import com.github.novotnyr.aedile.ConsulConfiguration;
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
 import com.github.novotnyr.aedile.EnvironmentVariables;
 import com.github.novotnyr.aedile.ImporterConfigurationException;
+import com.github.novotnyr.aedile.util.AntPathMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.PathMatcher;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +38,7 @@ public class DatacenterFilesystemImporter {
 
     private List<ExcludedFolder> excludedFolders = new LinkedList<>();
 
-    private PathMatcher pathMatcher = new AntPathMatcher();
+    private AntPathMatcher pathMatcher = new AntPathMatcher();
 
     public void importDatacenters(File datacenterConfigurationSubDirectory) {
         File[] datacenterDirectories = datacenterConfigurationSubDirectory.listFiles(File::isDirectory);
