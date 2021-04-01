@@ -31,6 +31,14 @@ In the example, `/etc/consul/config/ft-prod/mt` and `/etc/consul/config/ft-prod/
 subdirectories will be imported as `mt` and `meta` subdirectories respectively)
 under `ft-prod` directory in Consul K/V.
 
+Renaming property files (`--remap-config-name`)
+-----------------------------------------------
+Property filenames can be remapped:
+
+    --remap-config-name application-local=application,local
+
+This will remap `application-local.property` to `application,local` directory in Consul K/V.
+
 Disabling recursion
 -------------------
 

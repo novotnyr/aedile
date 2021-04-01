@@ -4,6 +4,7 @@ import com.ecwid.consul.v1.ConsulClient;
 import com.github.novotnyr.aedile.ConsulConfiguration;
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
 import com.github.novotnyr.aedile.filesystem.PropertyFilesDirectoryImporter;
+import com.github.novotnyr.aedile.resolver.MapBasedConfigurationNameResolver;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -36,6 +38,8 @@ public class PropertyFilesDirectoryImporterTest {
     private File apiConfig;
 
     private File implConfig;
+
+    private File localProfileApiConfig;
 
     @Before
     public void setUp() throws Exception {
@@ -67,9 +71,12 @@ public class PropertyFilesDirectoryImporterTest {
         Assert.assertTrue(implConfigFolder.mkdirs());
 
         apiConfig = new File(apiConfigFolder, "application.properties");
+        localProfileApiConfig = new File(apiConfigFolder, "application-local.properties");
+
         implConfig = new File(implConfigFolder, "application.properties");
 
         Files.write(apiConfig.toPath(), Arrays.asList("version=1.0", "api=true"));
+        Files.write(localProfileApiConfig.toPath(), Arrays.asList("version=1.0", "api=true", "profile=local"));
         Files.write(implConfig.toPath(), Arrays.asList("version=1.0", "impl=true"));
     }
 
@@ -81,5 +88,13 @@ public class PropertyFilesDirectoryImporterTest {
         verify(consulClient, times(1)).setKVValue(eq("config/application/impl"), eq("true"), any(), any(), any());
     }
 
+    @Test
+    public void testRunWithAliasing() throws Exception {
+        MapBasedConfigurationNameResolver resolver = new MapBasedConfigurationNameResolver(Collections.singletonMap("application-local", "application,local"));
+        importer = new PropertyFilesDirectoryImporter(repository, resolver);
+        importer.run(apiConfigFolder);
+
+        verify(consulClient, times(1)).setKVValue(eq("config/application,local/profile"), eq("local"), any(), any(), any());
+    }
 
 }

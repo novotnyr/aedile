@@ -9,12 +9,14 @@ import com.github.novotnyr.aedile.cmdline.HelpCommandConfiguration;
 import com.github.novotnyr.aedile.filesystem.DatacenterFilesystemImporter;
 import com.github.novotnyr.aedile.filesystem.PropertyFilesDirectoryImporter;
 import com.github.novotnyr.aedile.git.GitImporter;
+import com.github.novotnyr.aedile.resolver.MapBasedConfigurationNameResolver;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Map;
 
 public class Aedile {
     public static final Logger logger = LoggerFactory.getLogger(Aedile.class);
@@ -83,6 +85,10 @@ public class Aedile {
         PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(repository);
         directoryImporter.setKeyPrefix(consulConfiguration.getPrefix());
         directoryImporter.setImportSubdirectories(! commandConfiguration.isRecursiveImportDisabled());
+        Map<String, String> configurationNameMapping = commandConfiguration.getConfigurationNameMapping();
+        if (!configurationNameMapping.isEmpty()) {
+            directoryImporter.setConfigurationNameResolver(new MapBasedConfigurationNameResolver(configurationNameMapping));
+        }
 
         directoryImporter.run(configurationSubDirectory);
     }
