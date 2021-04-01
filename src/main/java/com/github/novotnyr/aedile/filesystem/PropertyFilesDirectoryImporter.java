@@ -3,7 +3,8 @@ package com.github.novotnyr.aedile.filesystem;
 import com.github.novotnyr.aedile.ConsulConfigurationRepository;
 import com.github.novotnyr.aedile.ImporterConfigurationException;
 import com.github.novotnyr.aedile.git.ConfigurationImportException;
-import org.apache.commons.io.FilenameUtils;
+import com.github.novotnyr.aedile.resolver.ConfigurationNameResolver;
+import com.github.novotnyr.aedile.resolver.DefaultConfigurationNameResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,16 +53,24 @@ public class PropertyFilesDirectoryImporter {
 
     private ConsulConfigurationRepository configurationRepository;
 
+    private ConfigurationNameResolver configurationNameResolver;
+
     private String prefix = DEFAULT_CONFIGURATION_PREFIX;
 
     private boolean importSubdirectories = true;
 
+    public PropertyFilesDirectoryImporter(ConsulConfigurationRepository configurationRepository) {
+        this(configurationRepository, new DefaultConfigurationNameResolver());
+    }
+
     /**
      * Create an importer with a specific Consul configuration
      * @param configurationRepository Consul configuration holder
+     * @param configurationNameResolver resolver for mapping of file names to configuration names
      */
-    public PropertyFilesDirectoryImporter(ConsulConfigurationRepository configurationRepository) {
+    public PropertyFilesDirectoryImporter(ConsulConfigurationRepository configurationRepository, ConfigurationNameResolver configurationNameResolver) {
         this.configurationRepository = configurationRepository;
+        this.configurationNameResolver = configurationNameResolver;
     }
 
     /**
@@ -90,7 +99,8 @@ public class PropertyFilesDirectoryImporter {
         for (File propertyFile : propertyFiles) {
             logger.info("Handling properties in {}", propertyFile);
             Map<String, String> properties = loadProperties(propertyFile);
-            configurationRepository.store(prefix, getConfigurationName(propertyFile), properties);
+            String configurationName = this.configurationNameResolver.getConfigurationName(propertyFile);
+            configurationRepository.store(prefix, configurationName, properties);
         }
     }
 
@@ -100,20 +110,11 @@ public class PropertyFilesDirectoryImporter {
         }
         File[] subdirectories = configurationDirectory.listFiles(File::isDirectory);
         for (File subdirectory : subdirectories) {
-            PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(this.configurationRepository);
+            PropertyFilesDirectoryImporter directoryImporter = new PropertyFilesDirectoryImporter(this.configurationRepository, this.configurationNameResolver);
             directoryImporter.setKeyPrefix(this.prefix + "/" + subdirectory.getName());
             directoryImporter.setImportSubdirectories(this.importSubdirectories);
             directoryImporter.run(subdirectory);
         }
-    }
-
-    /**
-     * Extracts the name of the configuration from file name.
-     * By default, the directory and the extensions is stripped. Thus, <code>/cfg/avatar.properties</code>
-     * leads to configuration <code>avatar</code>.
-     */
-    private String getConfigurationName(File configurationFile) {
-        return FilenameUtils.removeExtension(configurationFile.getName().toString());
     }
 
     /**
@@ -144,5 +145,12 @@ public class PropertyFilesDirectoryImporter {
      */
     public void setImportSubdirectories(boolean importSubdirectories) {
         this.importSubdirectories = importSubdirectories;
+    }
+
+    /**
+     * Configure ad-hoc renaming of property files.
+     */
+    public void setConfigurationNameResolver(ConfigurationNameResolver configurationNameResolver) {
+        this.configurationNameResolver = configurationNameResolver;
     }
 }
