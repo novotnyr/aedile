@@ -11,9 +11,9 @@ It is a standalone JAR, executable via `java -jar aedile.jar`
 
 There are following functionalities:
 
-*   import to Consul K/V from a specific directory with a set of .properties files
+*   import to Consul K/V from a specific directory with a set of `.properties` files
 *   import to Consul K/V from Git
-*   immport to Consul K/V from a set of datacenter-specific directories
+*   import to Consul K/V from a set of datacenter-specific directories
 *   export from Consul K/V to the directory tree
 
 Importing from the filesystem
@@ -23,25 +23,25 @@ To import the files from the filesystem directory, run Aedile:
 
     java -jar aedile.jar import /etc/consul/config/ft-prod
 
-The Consul configuration for the import is guided by the Environment Variables.
+The Consul configuration for the import is guided by Environment Variables.
 
 By default, all subdirectories are imported as well, recursively.
 
-In the example, `/etc/consul/config/ft-prod/mt` and `/etc/consul/config/ft-prod/meta`
-subdirectories will be imported as `mt` and `meta` subdirectories respectively)
+For example, `/etc/consul/config/ft-prod/mt` and `/etc/consul/config/ft-prod/meta`
+subdirectories will be imported as `mt` and `meta` subdirectories respectively,
 under `ft-prod` directory in Consul K/V.
 
 Renaming property files (`--remap-config-name`)
 -----------------------------------------------
+
 Property filenames can be remapped:
 
     --remap-config-name application-local=application,local
 
-This will remap `application-local.property` to `application,local` directory in Consul K/V.
+This will remap `application-local.properties` to `application,local` directory in Consul K/V.
 
 Disabling recursion
 -------------------
-
 To disable recursive import, use the `--no-recurse` argument, such as:
 
     java -jar aedile.jar import --no-recurse /etc/consul/config/ft-prod
